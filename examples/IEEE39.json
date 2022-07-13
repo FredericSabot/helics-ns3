@@ -1,0 +1,252 @@
+{
+  "name": "ns3",
+  "core_type": "zmq",
+  "terminate_on_error": true,
+  "source_only": false,
+  "observer": false,
+
+  "logfile": "cosim_output.log",
+  "log_level": "warning",
+
+  "publications": [
+    {
+      "key": "test"
+    }
+  ],
+  "subscriptions": [
+    {
+      "key": "Dynawo/U_1"
+    },
+    {
+      "key": "Dynawo/Phi_1"
+    },
+    {
+      "key": "Dynawo/U_2"
+    },
+    {
+      "key": "Dynawo/Phi_2"
+    },
+    {
+      "key": "Dynawo/U_3"
+    },
+    {
+      "key": "Dynawo/Phi_3"
+    },
+    {
+      "key": "Dynawo/U_4"
+    },
+    {
+      "key": "Dynawo/Phi_4"
+    },
+    {
+      "key": "Dynawo/U_5"
+    },
+    {
+      "key": "Dynawo/Phi_5"
+    },
+    {
+      "key": "Dynawo/U_6"
+    },
+    {
+      "key": "Dynawo/Phi_6"
+    },
+    {
+      "key": "Dynawo/U_7"
+    },
+    {
+      "key": "Dynawo/Phi_7"
+    },
+    {
+      "key": "Dynawo/U_8"
+    },
+    {
+      "key": "Dynawo/Phi_8"
+    },
+    {
+      "key": "Dynawo/U_9"
+    },
+    {
+      "key": "Dynawo/Phi_9"
+    },
+    {
+      "key": "Dynawo/U_10"
+    },
+    {
+      "key": "Dynawo/Phi_10"
+    },
+    {
+      "key": "Dynawo/U_11"
+    },
+    {
+      "key": "Dynawo/Phi_11"
+    },
+    {
+      "key": "Dynawo/U_12"
+    },
+    {
+      "key": "Dynawo/Phi_12"
+    },
+    {
+      "key": "Dynawo/U_13"
+    },
+    {
+      "key": "Dynawo/Phi_13"
+    },
+    {
+      "key": "Dynawo/U_14"
+    },
+    {
+      "key": "Dynawo/Phi_14"
+    },
+    {
+      "key": "Dynawo/U_15"
+    },
+    {
+      "key": "Dynawo/Phi_15"
+    },
+    {
+      "key": "Dynawo/U_16"
+    },
+    {
+      "key": "Dynawo/Phi_16"
+    },
+    {
+      "key": "Dynawo/U_17"
+    },
+    {
+      "key": "Dynawo/Phi_17"
+    },
+    {
+      "key": "Dynawo/U_18"
+    },
+    {
+      "key": "Dynawo/Phi_18"
+    },
+    {
+      "key": "Dynawo/U_19"
+    },
+    {
+      "key": "Dynawo/Phi_19"
+    },
+    {
+      "key": "Dynawo/U_20"
+    },
+    {
+      "key": "Dynawo/Phi_20"
+    },
+    {
+      "key": "Dynawo/U_21"
+    },
+    {
+      "key": "Dynawo/Phi_21"
+    },
+    {
+      "key": "Dynawo/U_22"
+    },
+    {
+      "key": "Dynawo/Phi_22"
+    },
+    {
+      "key": "Dynawo/U_23"
+    },
+    {
+      "key": "Dynawo/Phi_23"
+    },
+    {
+      "key": "Dynawo/U_24"
+    },
+    {
+      "key": "Dynawo/Phi_24"
+    },
+    {
+      "key": "Dynawo/U_25"
+    },
+    {
+      "key": "Dynawo/Phi_25"
+    },
+    {
+      "key": "Dynawo/U_26"
+    },
+    {
+      "key": "Dynawo/Phi_26"
+    },
+    {
+      "key": "Dynawo/U_27"
+    },
+    {
+      "key": "Dynawo/Phi_27"
+    },
+    {
+      "key": "Dynawo/U_28"
+    },
+    {
+      "key": "Dynawo/Phi_28"
+    },
+    {
+      "key": "Dynawo/U_29"
+    },
+    {
+      "key": "Dynawo/Phi_29"
+    },
+    {
+      "key": "Dynawo/U_30"
+    },
+    {
+      "key": "Dynawo/Phi_30"
+    },
+    {
+      "key": "Dynawo/U_31"
+    },
+    {
+      "key": "Dynawo/Phi_31"
+    },
+    {
+      "key": "Dynawo/U_32"
+    },
+    {
+      "key": "Dynawo/Phi_32"
+    },
+    {
+      "key": "Dynawo/U_33"
+    },
+    {
+      "key": "Dynawo/Phi_33"
+    },
+    {
+      "key": "Dynawo/U_34"
+    },
+    {
+      "key": "Dynawo/Phi_34"
+    },
+    {
+      "key": "Dynawo/U_35"
+    },
+    {
+      "key": "Dynawo/Phi_35"
+    },
+    {
+      "key": "Dynawo/U_36"
+    },
+    {
+      "key": "Dynawo/Phi_36"
+    },
+    {
+      "key": "Dynawo/U_37"
+    },
+    {
+      "key": "Dynawo/Phi_37"
+    },
+    {
+      "key": "Dynawo/U_38"
+    },
+    {
+      "key": "Dynawo/Phi_38"
+    },
+    {
+      "key": "Dynawo/U_39"
+    },
+    {
+      "key": "Dynawo/Phi_39"
+    }
+  ]
+}

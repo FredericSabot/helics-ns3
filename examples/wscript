@@ -18,3 +18,6 @@ def build(bld):
 
     obj = bld.create_ns3_program('fed-pubsub', ['helics'])
     obj.source = 'fed-pubsub.cc'
+
+    obj = bld.create_ns3_program('ieee39', ['helics', 'core', 'point-to-point', 'csma', 'internet', 'applications', 'flow-monitor', 'aodv', 'nix-vector-routing', 'visualizer'])
+    obj.source = '39BusNetwork.cc'
