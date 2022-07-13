@@ -309,18 +309,19 @@ HelicsApplication::NewTag ()
   return HelicsIdTag(m_next_tag_id++);
 }
 
-void 
+void
 HelicsApplication::DoFilter (std::unique_ptr<helics::Message> message)
 {
   NS_LOG_FUNCTION (this << message->to_string());
 }
  
-void 
+EventId
 HelicsApplication::Send (std::string dest, helics::Time time, std::unique_ptr<helics::Message> message)
 {
   NS_LOG_FUNCTION (this << dest << time << message->to_string());
  
   Ptr<Packet> p;
+  EventId id;
 
   // Find the HelicsApplication for the destination.
   Ptr<HelicsApplication> to = Names::Find<HelicsApplication>(SanitizeName (dest));
@@ -383,7 +384,7 @@ HelicsApplication::Send (std::string dest, helics::Time time, std::unique_ptr<he
         << "' uid '"
         << p->GetUid () <<"'");
     int (Socket::*fp)(Ptr<Packet>, uint32_t, const Address&) = &Socket::SendTo;
-    Simulator::Schedule(NanoSeconds (delay_ns), fp, m_socket, p, 0, address); //virtual method
+    id = Simulator::Schedule(NanoSeconds (delay_ns), fp, m_socket, p, 0, address); //virtual method
   }
   else if (Ipv6Address::IsMatchingType (m_localAddress))
   {
@@ -414,7 +415,7 @@ HelicsApplication::Send (std::string dest, helics::Time time, std::unique_ptr<he
         << "' uid '"
         << p->GetUid () <<"'");
     int (Socket::*fp)(Ptr<Packet>, uint32_t, const Address&) = &Socket::SendTo;
-    Simulator::Schedule(NanoSeconds (delay_ns), fp, m_socket, p, 0, address); //virtual method
+    id = Simulator::Schedule(NanoSeconds (delay_ns), fp, m_socket, p, 0, address); //virtual method
   }
   else {
     NS_LOG_INFO ("At time '"
@@ -423,9 +424,10 @@ HelicsApplication::Send (std::string dest, helics::Time time, std::unique_ptr<he
         << m_name
         << "' did not recognize local address");
     int (Socket::*fp)(Ptr<Packet>, uint32_t, const Address&) = &Socket::SendTo;
-    Simulator::Schedule(NanoSeconds (delay_ns), fp, m_socket, p, 0, to->GetLocalInet()); //virtual method
+    id = Simulator::Schedule(NanoSeconds (delay_ns), fp, m_socket, p, 0, to->GetLocalInet()); //virtual method
   }
   ++m_sent;
+  return id;
 }
 
 void 
@@ -567,6 +569,31 @@ void
 HelicsApplication::DoRead (std::unique_ptr<helics::Message> message)
 {
   NS_LOG_FUNCTION (this << message->to_string());
+}
+
+std::unique_ptr<helics::Message>
+HelicsApplication::RemovePadding (std::unique_ptr<helics::Message> message, const char padding_char)
+{
+  std::string data = std::string(message->to_string());
+  data.erase (std::remove (data.begin (), data.end (), padding_char), data.end ());
+  message->data = data;
+  return message;
+}
+
+std::unique_ptr<helics::Message>
+HelicsApplication::AddPadding (std::unique_ptr<helics::Message> message, const char padding_char, const uint16_t padding_len)
+{
+  std::string data = std::string(message->to_string());
+  if (data.size () <= padding_len) {
+    data += std::string((padding_len - data.size()), padding_char);  // std::string::basic_string (size, char)
+  }
+  else {
+    std::cout << "Aggregated frame too large: " << data << std::endl;
+    std::cout << "Size" << data.length () << std::endl;
+    NS_FATAL_ERROR ("Aggregated frame too large");
+  }
+  message->data = data;
+  return message;
 }
 
 } // Namespace ns3

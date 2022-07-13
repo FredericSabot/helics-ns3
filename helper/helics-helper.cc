@@ -15,6 +15,9 @@ SPDX-License-Identifier: BSD-3-Clause
 #include "ns3/helics-filter-application.h"
 #include "ns3/helics-static-sink-application.h"
 #include "ns3/helics-static-source-application.h"
+#include "ns3/helics-PMU-application.h"
+#include "ns3/helics-PDC-application.h"
+#include "ns3/helics-SPDC-application.h"
 #include "ns3/helics-helper.h"
 
 #include "helics/core/CoreTypes.hpp"
@@ -33,6 +36,9 @@ HelicsHelper::HelicsHelper()
     m_factory_filter.SetTypeId (HelicsFilterApplication::GetTypeId ());
     m_factory_sink.SetTypeId (HelicsStaticSinkApplication::GetTypeId ());
     m_factory_source.SetTypeId (HelicsStaticSourceApplication::GetTypeId ());
+    m_factory_PMU.SetTypeId (HelicsPMUApplication::GetTypeId ());
+    m_factory_PDC.SetTypeId (HelicsPDCApplication::GetTypeId ());
+    m_factory_SPDC.SetTypeId (HelicsSPDCApplication::GetTypeId ());
 }
 
 void
@@ -202,5 +208,81 @@ HelicsHelper::InstallStaticSource (Ptr<Node> node, const std::string &name, cons
     return apps;
 }
 
+ApplicationContainer
+HelicsHelper::InstallPMU (Ptr<Node> node, const std::string &name, const std::string &destination, double sampling_period_seconds, double stop_time_seconds, std::shared_ptr<helics::CombinationFederate> fed, std::vector<std::string> keys, int seed, bool pad, char pad_c, uint16_t pad_l, int port) const
+{
+    ApplicationContainer apps;
+    Ptr<HelicsPMUApplication> app = m_factory_PMU.Create<HelicsPMUApplication> ();
+    if (!app) {
+      NS_FATAL_ERROR ("Failed to create HelicsPMUApplication");
+    }
+    app->SetName (name);
+    app->SetDestination (destination);
+    app->SetSeed (seed);
+    Ptr<Ipv4> net = node->GetObject<Ipv4>();
+    Ipv4InterfaceAddress interface_address = net->GetAddress(1,0);
+    Ipv4Address address = interface_address.GetLocal();
+    app->SetLocal(address, port);
+    node->AddApplication (app);
+    app->SetSubscriptions (fed, keys);
+    app->SetSamplingPeriodSeconds (sampling_period_seconds);
+    app->SetStopTimeSeconds (stop_time_seconds);
+    if (pad)
+      app->SetPadding (pad_c, pad_l);
+    
+    apps.Add (app);
+    return apps;
+}
+
+ApplicationContainer
+HelicsHelper::InstallPDC (Ptr<Node> node, const std::string &name, const std::string &destination, double timer, const unsigned int nb_aggregates, bool pad, char pad_c, uint16_t pad_l, int port) const
+{
+    ApplicationContainer apps;
+    Ptr<HelicsPDCApplication> app = m_factory_PDC.Create<HelicsPDCApplication> ();
+    if (!app) {
+      NS_FATAL_ERROR ("Failed to create HelicsPDCApplication");
+    }
+    app->SetName (name);
+    app->SetDestination (destination);
+    Ptr<Ipv4> net = node->GetObject<Ipv4>();
+    Ipv4InterfaceAddress interface_address = net->GetAddress(1,0);
+    Ipv4Address address = interface_address.GetLocal();
+    app->SetLocal(address, port);
+    node->AddApplication (app);
+
+    app->SetTimer (timer);
+    app->SetNbAggregates (nb_aggregates);
+    if (pad)
+      app->SetPadding (pad_c, pad_l);
+    apps.Add (app);
+    return apps;
+}
+
+ApplicationContainer
+HelicsHelper::InstallSPDC (Ptr<Node> node, const std::string &name, const std::string &destination, double timer, const unsigned int nb_aggregates, std::vector<std::string> PMU_names, std::string log_file, bool pad, char pad_c, uint16_t pad_l, int port) const
+{
+    ApplicationContainer apps;
+    Ptr<HelicsSPDCApplication> app = m_factory_SPDC.Create<HelicsSPDCApplication> ();
+    if (!app) {
+      NS_FATAL_ERROR ("Failed to create HelicsSPDCApplication");
+    }
+    app->SetName (name);
+    app->SetDestination (destination);
+    Ptr<Ipv4> net = node->GetObject<Ipv4>();
+    Ipv4InterfaceAddress interface_address = net->GetAddress(1,0);
+    Ipv4Address address = interface_address.GetLocal();
+    app->SetLocal(address, port);
+    node->AddApplication (app);
+
+    app->SetTimer (timer);
+    app->SetNbAggregates (nb_aggregates);
+    if (pad)
+      app->SetPadding (pad_c, pad_l);
+    
+    app->setPMUs (PMU_names);
+    app->setLogFile (log_file);
+    apps.Add (app);
+    return apps;
+}
 }
 

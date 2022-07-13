@@ -102,7 +102,7 @@ public:
   /**
    * \brief Packet creation based on HELICS data sent to dest.
    */
-  void Send (std::string dest, helics::Time time, std::unique_ptr<helics::Message> message);
+  EventId Send (std::string dest, helics::Time time, std::unique_ptr<helics::Message> message);
 
   /**
    * \brief Receive a HELICS message.
@@ -110,6 +110,10 @@ public:
    * This function is called internally by HELICS.
    */
   void EndpointCallback (helics::Endpoint id, helics::Time time);
+
+  static std::unique_ptr<helics::Message> RemovePadding (std::unique_ptr<helics::Message>, const char);
+
+  static std::unique_ptr<helics::Message> AddPadding (std::unique_ptr<helics::Message>, const char, const uint16_t);
 
 protected:
   virtual void DoDispose (void);

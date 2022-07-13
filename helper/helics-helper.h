@@ -37,6 +37,11 @@ public:
 
   ApplicationContainer InstallStaticSource (Ptr<Node> node, const std::string &name, const std::string &destination, bool is_global=false, int port=1234) const;
   ApplicationContainer InstallGlobalStaticSource (Ptr<Node> node, const std::string &name, const std::string &destination, int port=1234) const { return InstallStaticSource (node, name, destination, true, port); }
+
+  ApplicationContainer InstallPMU (Ptr<Node> node, const std::string &name, const std::string &destination, double sampling_period_seconds, double stop_time_seconds, std::shared_ptr<helics::CombinationFederate> fed, std::vector<std::string> keys, int seed, bool pad, char pad_c = '*', uint16_t pad_l=500, int port=1234) const;
+  ApplicationContainer InstallPDC (Ptr<Node> node, const std::string &name, const std::string &destination, double timer, const unsigned int nb_aggregates, bool pad, char pad_c, uint16_t pad_l, int port=123) const;
+  ApplicationContainer InstallSPDC (Ptr<Node> node, const std::string &name, const std::string &destination, double timer, const unsigned int nb_aggregates, std::vector<std::string> PMU_names, std::string log_file, bool pad, char pad_c, uint16_t pad_l, int port=123) const;
+
 private:
   std::string broker;
   std::string name;
@@ -47,6 +52,9 @@ private:
   ObjectFactory m_factory_filter;
   ObjectFactory m_factory_sink;
   ObjectFactory m_factory_source;
+  ObjectFactory m_factory_PMU;
+  ObjectFactory m_factory_PDC;
+  ObjectFactory m_factory_SPDC;
 };
 
 }
